@@ -1,0 +1,6 @@
+com/fuzzysets/bank/service/BankService.class
+com/fuzzysets/bank/service/CalculationService.class
+com/fuzzysets/bank/dao/BankDto.class
+com/fuzzysets/bank/OPTIONS.class
+com/fuzzysets/bank/BankApplication.class
+com/fuzzysets/bank/controller/CalculationController.class

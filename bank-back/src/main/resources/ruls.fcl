@@ -1,0 +1,104 @@
+FUNCTION_BLOCK bank_deposit_selection
+
+VAR_INPUT
+    target : REAL;
+    months : REAL;
+    risk : REAL;
+    percent : REAL;
+END_VAR
+
+VAR_OUTPUT
+    depositRecommendation : REAL;
+END_VAR
+
+FUZZIFY target
+    TERM low := (0, 0) (2, 1) (4, 0);
+    TERM belowMiddle := (2, 0) (4, 1) (6, 0);
+    TERM middle := (4, 0) (6, 1) (8, 0);
+    TERM aboveMiddle := (6, 0) (8, 1) (10, 0);
+    TERM high := (8, 0) (10, 1);
+END_FUZZIFY
+
+FUZZIFY months
+    TERM low := (0, 0) (3, 1) (6, 0);
+    TERM belowMiddle := (4, 0) (7, 1) (10, 0);
+    TERM middle := (8, 0) (12, 1) (16, 0);
+    TERM aboveMiddle := (14, 0) (18, 1) (22, 0);
+    TERM high := (20, 0) (36, 1);
+END_FUZZIFY
+
+FUZZIFY risk
+    TERM low := (0, 0) (2, 1) (4, 0);
+    TERM belowMiddle := (2, 0) (4, 1) (6, 0);
+    TERM middle := (4, 0) (6, 1) (8, 0);
+    TERM aboveMiddle := (6, 0) (8, 1) (10, 0);
+    TERM high := (8, 0) (10, 1);
+END_FUZZIFY
+
+FUZZIFY percent
+    TERM low := (0, 0) (5, 1) (11, 0);
+    TERM belowMiddle := (10, 0) (14, 1) (17, 0);
+    TERM middle := (15, 0) (17, 1) (20, 0);
+    TERM aboveMiddle := (18, 0) (22, 1) (25, 0);
+    TERM high := (23, 0) (27, 1) (30, 0);
+END_FUZZIFY
+
+DEFUZZIFY depositRecommendation
+    TERM fast := (0, 1) (20, 0);
+    TERM threemonth := (20, 0) (30, 1) (40, 0);
+    TERM year := (40, 0) (50, 1) (60, 0);
+    TERM oneandhalf := (60, 0) (70, 1) (80, 0);
+    TERM longterm := (80, 0) (100, 1);
+    METHOD : COG;
+    DEFAULT := 0;
+END_DEFUZZIFY
+
+RULEBLOCK RecommendationRules
+    // Use 'min' for 'and' (also implicit use 'max'
+    // for 'or' to fulfill DeMorgan's Law)
+    AND : MIN;
+    // Use 'min' activation method
+    ACT : MIN;
+    // Use 'max' accumulation method
+    ACCU : MAX;
+
+    // Правила для минимальных случаев
+    RULE 1 :
+    IF target IS low
+    OR months IS low
+    OR risk IS low
+    OR percent IS low
+    THEN depositRecommendation IS fast;
+
+    // Правила для средних случаев
+    RULE 2 :
+    IF (target IS NOT low AND months IS NOT low AND risk IS NOT low AND percent IS NOT low)
+    AND (target IS belowMiddle OR months IS belowMiddle OR risk IS belowMiddle OR percent IS belowMiddle)
+    THEN depositRecommendation IS threemonth;
+
+    // Правила для хороших случаев
+    RULE 3 :
+    IF (target IS NOT low AND months IS NOT low AND risk IS NOT low AND percent IS NOT low)
+    AND (target IS NOT belowMiddle AND months IS NOT belowMiddle AND risk IS NOT belowMiddle AND percent IS NOT belowMiddle)
+    AND (target IS middle OR months IS middle OR risk IS middle OR percent IS middle)
+    THEN depositRecommendation IS year;
+
+    // Правила для очень хороших случаев
+    RULE 4 :
+    IF (target IS NOT low AND months IS NOT low AND risk IS NOT low AND percent IS NOT low)
+    AND (target IS NOT belowMiddle AND months IS NOT belowMiddle AND risk IS NOT belowMiddle AND percent IS NOT belowMiddle)
+    AND (target IS NOT middle AND months IS NOT middle AND risk IS NOT middle AND percent IS NOT middle)
+    AND (target IS aboveMiddle OR months IS aboveMiddle OR risk IS aboveMiddle OR percent IS aboveMiddle)
+    THEN depositRecommendation IS oneandhalf;
+
+    // Правила для отличных случаев
+    RULE 5 :
+    IF target IS high
+    AND months IS high
+    AND risk IS high
+    AND percent IS high
+    THEN depositRecommendation IS longterm;
+
+END_RULEBLOCK
+
+END_FUNCTION_BLOCK

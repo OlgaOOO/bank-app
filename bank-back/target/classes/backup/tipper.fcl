@@ -1,0 +1,102 @@
+FUNCTION_BLOCK bank_deposit_selection
+
+VAR_INPUT
+    target : REAL;
+    months : REAL;
+    risk : REAL;
+    percent : REAL;
+END_VAR
+
+VAR_OUTPUT
+    depositRecommendation : REAL;
+END_VAR
+
+FUZZIFY target
+    TERM bad := (0, 0) (2, 1) (4, 0);
+    TERM notVeryBad := (2, 0) (4, 1) (6, 0);
+    TERM fine := (4, 0) (6, 1) (8, 0);
+    TERM veryGood := (6, 0) (8, 1) (10, 0);
+    TERM great := (8, 0) (10, 1);
+END_FUZZIFY
+
+FUZZIFY months
+    TERM short := (1, 0) (3, 1) (6, 0);
+    TERM notVeryShort := (4, 0) (7, 1) (10, 0);
+    TERM middle := (8, 0) (12, 1) (16, 0);
+    TERM long := (14, 0) (18, 1) (22, 0);
+    TERM veryLong := (20, 0) (36, 1);
+END_FUZZIFY
+
+FUZZIFY risk
+    TERM bad := (0, 0) (2, 1) (4, 0);
+    TERM notVeryBad := (2, 0) (4, 1) (6, 0);
+    TERM fine := (4, 0) (6, 1) (8, 0);
+    TERM veryGood := (6, 0) (8, 1) (10, 0);
+    TERM great := (8, 0) (10, 1);
+END_FUZZIFY
+
+FUZZIFY percent
+    TERM verySmall := (0, 1) (10, 0);
+    TERM small := (7, 0) (12, 1) (15, 0);
+    TERM middle := (13, 0) (17, 1) (20, 0);
+    TERM big := (18, 0) (22, 1) (25, 0);
+    TERM veryBig := (23, 0) (27, 1) (30, 0);
+END_FUZZIFY
+
+DEFUZZIFY depositRecommendation
+    TERM fast := (0, 1) (20, 0);
+    TERM threemonth := (20, 0) (30, 1) (40, 0);
+    TERM year := (40, 0) (50, 1) (60, 0);
+    TERM oneandhalf := (60, 0) (70, 1) (80, 0);
+    TERM longterm := (80, 0) (100, 1);
+    METHOD : COG;
+    DEFAULT := 0;
+END_DEFUZZIFY
+
+RULEBLOCK RecommendationRules
+    // Use 'min' for 'and' (also implicit use 'max'
+    // for 'or' to fulfill DeMorgan's Law)
+    AND : MIN;
+    // Use 'min' activation method
+    ACT : MIN;
+    // Use 'max' accumulation method
+    ACCU : MAX;
+
+    RULE 1 :
+    IF target IS bad
+    AND months IS short
+    AND risk IS bad
+    AND percent IS verySmall
+    THEN depositRecommendation IS fast;
+
+    RULE 2 :
+    IF target IS notVeryBad
+    AND months IS notVeryShort
+    AND risk IS notVeryBad
+    AND percent IS small
+    THEN depositRecommendation IS threemonth;
+
+    RULE 3 :
+    IF target IS fine
+    AND months IS middle
+    AND risk IS fine
+    AND percent IS middle
+    THEN depositRecommendation IS year;
+
+    RULE 4 :
+    IF target IS veryGood
+    AND months IS long
+    AND risk IS veryGood
+    AND percent IS big
+    THEN depositRecommendation IS oneandhalf;
+
+    RULE 5 :
+    IF target IS great
+    AND months IS veryLong
+    AND risk IS great
+    AND percent IS veryBig
+    THEN depositRecommendation IS longterm;
+
+END_RULEBLOCK
+
+END_FUNCTION_BLOCK
