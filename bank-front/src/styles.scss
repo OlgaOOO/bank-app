@@ -1,0 +1,19 @@
+body {
+    background-image: url('assets/resources/F865.png');
+    background-repeat: repeat;
+    background-size: cover;
+
+    display: flex;
+    justify-content: center;
+    font-family: 'Poppins', sans-serif;
+}
+
+.content {
+    background-color: rgb(44, 44, 44);
+    padding: 20px;
+    border-radius: 20px;
+}
+
+.column {
+    background-color: rgb(223, 222, 222);
+}

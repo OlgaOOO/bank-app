@@ -1,0 +1,80 @@
+input {
+    padding: 6px;
+    margin-bottom: 6px;
+    width: 92%;
+}
+
+button {
+    color: white;
+    background-color: #000;
+    padding: 0 20px 0 20px;
+    border-radius: 6px;
+    margin: 22px 0 10px 0;
+}
+
+th {
+    text-align: left;
+    font-size: 14px;
+    border: 1px solid #b1b1b1;
+    border-left: 1px solid #b1b1b1;
+    width: 80px;
+    padding-left: 4px;
+    padding-right: 4px;
+    margin: 0;
+    // font-weight: 200;
+}
+
+th,
+td {
+    border: 1px solid #b1b1b1;
+    border-left: 1px solid #b1b1b1;
+}
+
+th p,
+td p {
+    padding-left: 6px;
+}
+
+td p {
+    text-align: center;
+}
+
+table {
+    border-spacing: 0;
+}
+
+.content {
+    margin-left: 50px;
+}
+
+.data,
+.result {
+    padding: 14px;
+    background-color: rgb(248, 248, 248);
+    width: 500px;
+    opacity: 0.90;
+    border-radius: 14px;
+    box-shadow: 0px 0px 30px 0px rgba(0, 0, 0, 1.0);
+    display: grid;
+}
+
+.response {
+    font-weight: 500;
+}
+
+.deposits {
+    display: flex;
+    gap: 200px;
+}
+
+.deposits h3 {
+    color: rgb(185, 185, 185);
+}
+
+.deposits table {
+    opacity: .9;
+}
+
+.allDiposits th, .allDiposits td {
+    border-radius: 5px;
+}

@@ -1,0 +1,86 @@
+<div class="deposits">
+
+    <div class="content">
+        <style>
+            @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+        </style>
+    
+        <div class="data">
+            <h2>Введите предпочтения для вклада:</h2>
+            <div>
+               <label for="goalSlider">Цель вклада от 0 (сохранить деньги от инфляции) до 10 (максимизация прибыли):</label><br>
+                <input type="range" id="goalSlider" min="1" max="10" [(ngModel)]="target">
+                {{ target }} 
+            </div>
+    
+            <div>
+              <label for="goalSlider">Уровень риска от 0 (очень низкий) до 10 (очень высокий):</label><br>
+                <input type="range" id="goalSlider" min="1" max="10" [(ngModel)]="risk">
+                {{ risk }}  
+            </div>
+               
+            <div>
+                <label for="goalSlider">Срок в месяцах:</label><br>
+                <input type="range" id="goalSlider" min="1" max="36" [(ngModel)]="months"> {{ months }}    
+            </div>
+            
+            <div>
+                <label for="goalSlider">Предпочитаемый процент по вкладу:</label><br>
+                <input type="range" id="goalSlider" min="8" max="27" [(ngModel)]="percent"> {{ percent }}    
+            </div>
+    
+            <button (click)="getGame()"><h4>Найти подходящий вклад</h4></button>
+        </div>
+    
+        <br>
+        <div class="result">
+            <h3>Результат:</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th class="column"><p>Вклад</p></th>
+                        <th class="column"><p>Прибыль</p></th>
+                        <th class="column"><p>Риск</p></th>
+                        <th class="column"><p>Срок (мес.)</p></th>
+                        <th class="column"><p>Процентная ставка</p></th>
+                    </tr>
+                </thead>
+                <tbody id="tableBody">
+                    <tr *ngFor="let deposit of deposits">
+                        <td class="column"><p>{{ deposit.name }}</p></td>
+                        <td class="column"><p>{{ deposit.target }}</p></td>
+                        <td class="column"><p>{{ deposit.risk }}</p></td>
+                        <td class="column"><p>{{ deposit.months }}</p></td>
+                        <td class="column"><p>{{ deposit.percent }}</p></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+    </div>
+    
+    <div class="allDiposits">
+        <h3>Все вклады:</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th class="column"><p>Вклад</p></th>
+                    <th class="column"><p>Прибыль</p></th>
+                    <th class="column"><p>Риск</p></th>
+                    <th class="column"><p>Срок (мес.)</p></th>
+                    <th class="column"><p>Процентная ставка</p></th>
+                </tr>
+            </thead>
+            <tbody id="tableBody">
+                <tr *ngFor="let deposit of allDeposits">
+                    <td class="column"><p>{{ deposit.name }}</p></td>
+                    <td class="column"><p>{{ deposit.target }}</p></td>
+                    <td class="column"><p>{{ deposit.risk }}</p></td>
+                    <td class="column"><p>{{ deposit.months }}</p></td>
+                    <td class="column"><p>{{ deposit.percent }}</p></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+</div>
